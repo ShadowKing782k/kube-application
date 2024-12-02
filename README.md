@@ -1,7 +1,7 @@
 
 ---
 
-# kube-application Helm Chart
+# kube-application Operator
 
 This Helm chart installs the `kube-application` operator, a Kubernetes operator built with Java and Quarkus. The operator manages custom resources (`kubeapplications`) and automatically creates and manages related deployments, services, and horizontal pod autoscalers.
 
