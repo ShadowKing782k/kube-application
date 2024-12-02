@@ -1,0 +1,52 @@
+apiVersion: phoenix.io/v1
+kind: KubeApplication
+metadata:
+  name: nginx1-kube-application
+  namespace: devops
+spec:
+  deploymentConfig:
+    metadata:
+      name: nginx1-deployment
+      namespace: devops
+    spec:
+      replicas: 1
+      selector:
+        matchLabels:
+          component: nginx1
+      template:
+        metadata:
+          labels:
+            component: nginx1
+        spec:
+          containers:
+            - name: nginx
+              image: nginx:latest
+  serviceConfig:
+    metadata:
+      name: nginx1-service
+      namespace: devops
+    spec:
+      ports:
+        - protocol: TCP
+          port: 8080
+          targetPort: 8080
+      selector:
+        component: nginx1
+  hpaConfig:
+    metadata:
+      name: nginx1-hpa
+      namespace: devops
+    spec:
+      scaleTargetRef:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: nginx1-deployment
+      minReplicas: 1
+      maxReplicas: 5
+      metrics:
+        - type: Resource
+          resource:
+            name: cpu
+            target:
+              type: Utilization
+              averageUtilization: 70
